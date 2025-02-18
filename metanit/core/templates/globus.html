@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Глобус с использованием ArcGIS API</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.26/esri/themes/light/main.css">
+    <style>
+        html, body, #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <script src="https://js.arcgis.com/4.26/"></script>
+    <script>
+        require([
+            "esri/Map",
+            "esri/views/SceneView",
+            "esri/geometry/Extent",
+            "esri/geometry/SpatialReference"
+        ], function(Map, SceneView, Extent, SpatialReference) {
+
+            // Создаем карту
+            const map = new Map({
+                basemap: "streets",
+                ground: "world-elevation"
+            });
+
+            // Создаем 3D-вид (SceneView)
+            const view = new SceneView({
+                container: "viewDiv",
+                map: map,
+                viewingMode: "global",
+                camera: {
+                    position: {
+                        x: 0,
+                        y: 0,
+                        z: 10000000 // Высота камеры над глобусом
+                    },
+                    tilt: 0
+                }
+            });
+
+            // Опционально: Устанавливаем начальный экстент (область просмотра)
+            const extent = new Extent({
+                xmin: -180,
+                ymin: -90,
+                xmax: 180,
+                ymax: 90,
+                spatialReference: new SpatialReference({ wkid: 4326 })
+            });
+
+            view.extent = extent;
+        });
+    </script>
+</head>
+<body>
+    <div id="viewDiv"></div>
+</body>
+</html>
